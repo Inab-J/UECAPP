@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings Activity -->
+    <string-array name="pref_belong_list">
+        <item>情報理工学部　昼間コース</item>
+        <item>情報理工学部　夜間コース</item>
+        <item>情報理工学域</item>
+    </string-array>
+    <string-array name="pref_belong_entry_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="pref_grade_list">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <!-- My Time Table -->
+    <string-array name="day_name">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+    </string-array>
+    <string-array name="period_start">
+        <item>9:00~</item>
+        <item>10:40~</item>
+        <item>13:00~</item>
+        <item>14:40~</item>
+        <item>16:15~</item>
+        <item>17:50~</item>
+        <item>19:30~</item>
+    </string-array>
+</resources>

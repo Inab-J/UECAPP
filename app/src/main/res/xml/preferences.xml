@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:InformationStyle="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/pref_category_user">
+        <ListPreference
+            android:title="@string/pref_user_belong_title"
+            android:dialogTitle="@string/pref_user_belong_title"
+            android:entries="@array/pref_belong_list"
+            android:entryValues="@array/pref_belong_entry_values"
+            android:key="pref_user_belong"
+            android:summary="@string/pref_user_belong_summary"/>
+        <ListPreference
+            android:title="@string/pref_user_grade_title"
+            android:dialogTitle="@string/pref_user_grade_title"
+            android:entries="@array/pref_grade_list"
+            android:entryValues="@array/pref_grade_list"
+            android:key="pref_user_grade"
+            android:summary="@string/pref_user_grade_summary"/>
+    </PreferenceCategory>
+
+    <!--
+    <PreferenceCategory android:title="@string/pref_category_notification">
+        <CheckBoxPreference
+            android:key="pref_notification_cancel"
+            android:title="@string/pref_notification_cancel_title"
+            android:summary="@string/pref_notification_cancel_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_notification_new_calendar"
+            android:title="@string/pref_notification_new_calendar_title"
+            android:summary="@string/pref_notification_new_calendar_summary"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+    -->
+
+    <PreferenceCategory android:title="@string/pref_category_about">
+        <net.inab_j.uecapp.model.System.InfomationPreference
+            InformationStyle:informationType="@integer/pref_about_app"
+            android:title="@string/pref_about_title"
+            android:dialogTitle="@string/pref_about_title"/>
+        <net.inab_j.uecapp.model.System.InfomationPreference
+            InformationStyle:informationType="@integer/pref_licenses"
+            android:title="@string/pref_license_title"
+            android:dialogTitle="@string/pref_license_title"/>
+        <Preference android:title="@string/pref_mail_contact_title">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="@string/pref_contact_email"/>
+        </Preference>
+        <Preference android:title="@string/pref_twitter_contact_title">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="@string/pref_contact_twitter_uri"/>
+        </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

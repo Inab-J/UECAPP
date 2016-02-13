@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="syllabus_grade">学年</string>
+    <string name="syllabus_belong">所属</string>
+    <string name="syllabus_term">学期</string>
+    <string name="syllabus_day">曜日</string>
+    <string name="syllabus_period">時限</string>
+    <string name="syllabus_keyword">キーワード</string>
+    <string name="syllabus_search">検索</string>
+</resources>

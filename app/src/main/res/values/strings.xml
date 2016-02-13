@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">UECAPP</string>
+    <string name="action_settings">設定</string>
+    <string name="title_activity_calendar">学年暦</string>
+    <string name="title_activity_time_table">時間割</string>
+    <string name="title_activity_link">リンク</string>
+    <string name="title_activity_library">開館情報</string>
+    <string name="title_activity_cancel">休講情報</string>
+    <string name="title_activity_syllabus">シラバス</string>
+
+    <!-- Cancel, Calendar -->
+    <string name="nocancel">休講情報はありません</string>
+
+    <!-- Library -->
+    <string name="lib_normal">通常開館\n9:00~21:30</string>
+    <string name="lib_short">短縮開館\n9:00~17:00</string>
+    <string name="lib_sat">土曜開館\n10:00~17:00</string>
+    <string name="lib_early">繰り上げ開館\n8:30~21:30</string>
+    <string name="lib_close">休館</string>
+    <string name="title_activity_my_time_table">MyTimeTableActivity</string>
+
+    <!-- timetable -->
+    <string name="timet_grade1">1年</string>
+    <string name="timet_grade2">2年</string>
+    <string name="timet_grade3">3年</string>
+    <string name="timet_grade4">4年</string>
+    <string name="timet_others">その他</string>
+    <string name="timet_1semester">1学期</string>
+    <string name="timet_2semester">2学期</string>
+    <string name="timet_3semester">3学期</string>
+    <string name="timet_4semester">4学期</string>
+    <string name="timet_5semester">5学期</string>
+    <string name="timet_6semester">6学期</string>
+    <string name="timet_7semester">7学期</string>
+    <string name="timet_8semester">8学期</string>
+    <string name="timet_english">英語</string>
+    <string name="timet_foreign">第2外国語</string>
+    <string name="timet_high">上級</string>
+    <string name="timet_international">国際</string>
+    <string name="timet_teach">教職</string>
+    <string name="timet_link">大学院連携</string>
+    <string name="timet_getting">ダウンロード中</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="link_campus_web">学務情報システム</string>
+    <string name="link_at_univ">\@Univ</string>
+    <string name="link_webclass">WebClass</string>
+</resources>
