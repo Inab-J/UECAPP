@@ -3,6 +3,8 @@ package net.inab_j.uecapp.view.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,8 +18,12 @@ import android.widget.TextView;
 import net.inab_j.uecapp.R;
 import net.inab_j.uecapp.view.widget.MyTimeTableView;
 
+/**
+ * My時間割の処理を行う。
+ */
 public class MyTimeTableActivity extends AppCompatActivity
         implements View.OnLongClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+
 
     private static final String[] DAY_NAME = {"月曜", "火曜", "水曜", "木曜", "金曜", "土曜"};
     public static final String SHARED_PREF_TAG = "mytimetable";
@@ -44,6 +50,36 @@ public class MyTimeTableActivity extends AppCompatActivity
         ((TextView) findViewById(Integer.parseInt(key))).setText(sharedPreferences.getString(key, ""));
     }
 
+    public static class DeleteConfirmDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final SharedPreferences sharedPref =
+                    getActivity().getSharedPreferences(SHARED_PREF_TAG, MODE_PRIVATE);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("削除してよろしいですか")
+                    .setPositiveButton("削除", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String posName = getArguments().getString("table_pos");
+                            sharedPref.edit().remove(posName).apply();
+                            dismiss();
+                        }
+                    })
+                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getFragmentManager().popBackStack();
+                        }
+                    });
+            return builder.create();
+        }
+
+        public static DeleteConfirmDialog newInstance() {
+            return new DeleteConfirmDialog();
+        }
+    }
+
     public static class ClassDialog extends DialogFragment {
         String posName;
 
@@ -58,7 +94,8 @@ public class MyTimeTableActivity extends AppCompatActivity
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final SharedPreferences sharedPref = getActivity().getSharedPreferences(SHARED_PREF_TAG, MODE_PRIVATE);
+            final SharedPreferences sharedPref =
+                    getActivity().getSharedPreferences(SHARED_PREF_TAG, MODE_PRIVATE);
             posName = getArguments().getString("table_pos");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -83,7 +120,7 @@ public class MyTimeTableActivity extends AppCompatActivity
                             dismiss();
                         }
                     })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dismiss();
@@ -92,8 +129,19 @@ public class MyTimeTableActivity extends AppCompatActivity
                     .setNeutralButton("削除", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            sharedPref.edit().remove(posName).apply();
-                            dismiss();
+                            DeleteConfirmDialog confirmDialog = new DeleteConfirmDialog();
+                            confirmDialog.show(getFragmentManager(), "confirm");
+
+                            Bundle pos = new Bundle();
+                            pos.putString("table_pos", posName);
+                            confirmDialog.setArguments(pos);
+
+                            FragmentManager fm = getFragmentManager();
+                            fm.beginTransaction()
+                                    .remove(fm.findFragmentByTag("edit"))
+                                    .show(confirmDialog)
+                                    .addToBackStack("edit")
+                                    .commit();
                         }
                     });
 
