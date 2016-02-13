@@ -18,9 +18,11 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * 時間割のPDFをダウンロードして保存し、Intentを発行する。
+ */
 public class GetPDFTask extends AsyncTask<Void, Void, Void> {
 
-    private final int BUFFER_SIZE = 4096;
     private final String BASE_URL = "http://kyoumu.office.uec.ac.jp/timet/";
     private final String SAVE_DIR = Environment.getExternalStorageDirectory().getPath() + "/UECApp/";
 
@@ -28,16 +30,27 @@ public class GetPDFTask extends AsyncTask<Void, Void, Void> {
     private String mFileName;
     private boolean mIsNotFound = false;
 
+    /**
+     * コンストラクタ
+     * @param activity 呼び出し元Activity
+     * @param fileName 取得するPDFのファイル名
+     */
     public GetPDFTask(TimeTableActivity activity, String fileName) {
         mActivity = activity;
         mFileName = fileName;
     }
 
+    /**
+     * 非同期でPDFを取得する。
+     * 既にファイルがあるか、404エラーであればreturn.
+     * @param params
+     * @return null
+     */
     @Override
     protected Void doInBackground(Void... params) {
+        final int BUFFER_SIZE = 4096;
 
         checkDirectoryExists();
-
         try {
             URL url = new URL(BASE_URL + mFileName);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -46,6 +59,7 @@ public class GetPDFTask extends AsyncTask<Void, Void, Void> {
 
             if (con.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 mIsNotFound = true;
+                return null;
             }
 
             DataInputStream dataInStream = new DataInputStream(con.getInputStream());
@@ -69,6 +83,10 @@ public class GetPDFTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    /**
+     * PDFファイルが存在すれば表示するIntentを発行し、なければSnackBarで上表を表示する。
+     * @param aVoid
+     */
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);

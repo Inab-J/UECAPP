@@ -11,8 +11,10 @@ import net.inab_j.uecapp.view.widget.CancelItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 休講情報ページのHTMLを取得し、パースしてその情報をUIに適用する。
+ */
 public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
-
 
     private final String CANCEL_URL = "http://kyoumu.office.uec.ac.jp/kyuukou/kyuukou.html";
     private final String ENCODING = "SJIS";
@@ -21,8 +23,10 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
     private CancelActivity mActivity;
 
     /**
-     * Constructor
-     * @param adapter
+     * コンストラクタ
+     * @param adapter リストのアダプタ
+     * @param listView 情報を表示するListView
+     * @param activity ListViewを管理するアクティビティ
      */
     public GetCancelTask(CancelAdapter adapter, ListView listView, CancelActivity activity) {
         super(adapter, listView);
@@ -31,17 +35,23 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
         setEncoding(ENCODING);
     }
 
+    /**
+     * 非同期で休講情報の取得を行う。
+     * @param params
+     * @return 有効なキャッシュが存在すればそのデータを、しなければダウンロードし、{@code List<String>}で返す。
+     */
     @Override
     protected List<String> doInBackground(Void... params) {
-        /*
         if (CacheManager.hasValidCache(mContext, CacheManager.sCANCEL)) {
             return CacheManager.getCache(mContext, CacheManager.sCANCEL);
         }
         return doGet(CANCEL_URL);
-        */
-        return new ArrayList<String>();
     }
 
+    /**
+     * 非同期で取得した休講情報をUIのListViewに適用する。
+     * @param result 取得したデータ
+     */
     @Override
     protected void onPostExecute(List<String> result) {
         final int CANCEL_CLASS = 0;
@@ -79,6 +89,7 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
             }
         }
 
+        // 休講情報がなければ、対応するメッセージを表示する
         if (cancelItemList.size() == 0) {
             mActivity.setVisible();
         } else {
