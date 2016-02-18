@@ -228,7 +228,7 @@ public class CalendarView extends LinearLayout {
 
                 // 日付を設定
                 dayView.setText(String.valueOf(dayCounter));
-                dayView.setGravity(Gravity.CENTER_HORIZONTAL);
+                dayView.setGravity(Gravity.CENTER);
 
                 boolean isToday = todayYear  == year  &&
                         todayMonth == month &&
