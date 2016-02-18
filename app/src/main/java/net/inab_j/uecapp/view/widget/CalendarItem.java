@@ -2,39 +2,55 @@ package net.inab_j.uecapp.view.widget;
 
 public class CalendarItem {
     private long mId;
+    private boolean mIsHeader = false;
+    private String mYear;
     private String mDate;
     private String mEvent;
     private boolean mRemark = false;
 
-    public long get_id() {
+    public long getId() {
         return mId;
     }
 
-    public void set_id(long id) {
+    public void setId(long id) {
         this.mId = id;
     }
 
-    public String get_date() {
+    public boolean isHeader() {
+        return mIsHeader;
+    }
+
+    public void isHeader(boolean isHeader) {
+        this.mIsHeader = isHeader;
+    }
+
+    public String getYear() { return mYear; }
+
+    public void setYear(String year) {
+        this.mYear = year;
+    }
+
+    public String getDate() {
         return mDate;
     }
 
-    public void set_date(String date) {
+    public void setDate(String date) {
         this.mDate = date;
     }
 
-    public String get_event() {
+    public String getEvent() {
         return mEvent;
     }
 
-    public void set_event(String event) {
+    public void setEvent(String event) {
         this.mEvent = event;
     }
 
-    public void set_remark(boolean remark) {
+    public void isRemark(boolean remark) {
         this.mRemark = remark;
     }
 
-    public boolean is_remark() {
+    public boolean isRemark() {
         return mRemark;
     }
 }

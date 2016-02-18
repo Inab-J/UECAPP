@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import net.inab_j.uecapp.controller.provider.GetCancelTask;
 import net.inab_j.uecapp.R;
@@ -46,6 +47,6 @@ public class CancelActivity extends AppCompatActivity {
      * 休講情報がなかった場合、GetCancelTaskから呼び出して、メッセージを表示する。
      */
     public void setVisible() {
-        ((ViewGroup) findViewById(R.id.test)).getChildAt(1).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.nolist)).setVisibility(View.VISIBLE);
     }
 }

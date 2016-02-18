@@ -155,7 +155,7 @@ public final class CacheManager {
                 // ラズパイサーバにアクセスして新年度版が公開されてるかチェック
                 case sCALENDAR:
                     // TODO サーバー用意と処理
-                    return false;
+                    return true;
 
                 default:
                     return false;

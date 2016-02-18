@@ -2,6 +2,7 @@ package net.inab_j.uecapp.controller.provider;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
 import net.inab_j.uecapp.controller.util.CacheManager;
@@ -20,9 +21,6 @@ import java.util.List;
  */
 public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
 
-    private final int CALENDAR_DATE = 1;
-    private final int CALENDAR_EVENT = 2;
-    private final int CALENDAR_NOTE = 0;
     private final int ERA_BEGIN = 1989;
     private final String CALENDAR_URL = "http://www.uec.ac.jp/campus/academic/calendar/";
     private final String ERA_NAME_JP = "平成";
@@ -48,28 +46,41 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
 
     @Override
     protected void onPostExecute(List<String> result) {
+        final int CALENDAR_DATE = 1;
+        final int CALENDAR_EVENT = 2;
+        final int CALENDAR_NOTE = 0;
+
         CacheManager.setCache(result, mContext, CacheManager.sCALENDAR);
         List<CalendarItem> calendarItemList = new ArrayList<>();
 
-        int newYear = 0;
+        int newYear = 0;  // 途中で"平成n年"だけの行が現れるためその後の補正用
         CalendarItem item = new CalendarItem();
-        for (int i = 1; i < result.size(); i++) {
-            Log.d("dbg", i+ ";"+result.get(i));
+        for (int i = 0; i < result.size(); i++) {
+            Log.d("calendar", i + ": " + result.get(i));
+
+            if (result.get(i).startsWith(ERA_NAME_JP)) {
+                if (i != 0)
+                    newYear = 1;
+                item.isHeader(true);
+                item.setYear(result.get(i));
+                calendarItemList.add(item);
+                item = new CalendarItem();
+                continue;
+            }
+
             switch ((i - newYear) % 3) {
                 case CALENDAR_DATE:
-                    if (result.get(i).startsWith(ERA_NAME_JP)) {
-                        newYear = 1;
-                        continue;
-                    }
-                    item.set_date(result.get(i));
+                    // "平成n年"の行
+                    String dateStr = replaceZenkakuHankaku(result.get(i));
+                    item.setDate(replaceTilde(dateStr));
                     break;
 
                 case CALENDAR_EVENT:
-                    item.set_event(result.get(i));
+                    item.setEvent(replaceZenkakuHankaku(result.get(i)));
                     break;
 
                 case CALENDAR_NOTE:
-                    item.set_remark(result.get(i).length() >= 3);
+                    item.isRemark(result.get(i).length() >= 3);
                     calendarItemList.add(item);
                     item = new CalendarItem();
                     break;
@@ -95,5 +106,9 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
         }
 
         return CALENDAR_URL + ERA_NAME_EN.substring(0, 1) + jpEra + "-1.html";
+    }
+
+    private String replaceTilde(String str) {
+        return str.replace("から", "〜");
     }
 }

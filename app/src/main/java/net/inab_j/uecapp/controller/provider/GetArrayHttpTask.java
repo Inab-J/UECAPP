@@ -110,9 +110,9 @@ public class GetArrayHttpTask<T extends BaseAdapter> extends AsyncTask<Void, Voi
      * @return 半角に変換した文字列
      */
     protected String replaceZenkakuHankaku(String str) {
-        String wspace = String.valueOf('\u3000');
-        String left = String.valueOf('\uff08');
-        String right = String.valueOf('\uff09');
+        String wspace = String.valueOf('\u3000');  // 全角スペース
+        String left = String.valueOf('\uff08');    // 全角左カッコ
+        String right = String.valueOf('\uff09');   // 全角右カッコ
 
         return str.replaceAll(left, "(").replaceAll(right, ")").replaceAll(wspace, " ");
     }

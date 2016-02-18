@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import net.inab_j.uecapp.view.widget.MyTimeTableView;
 public class MyTimeTableActivity extends AppCompatActivity
         implements View.OnLongClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
-
     private static final String[] DAY_NAME = {"月曜", "火曜", "水曜", "木曜", "金曜", "土曜"};
     public static final String SHARED_PREF_TAG = "mytimetable";
 
@@ -36,6 +34,9 @@ public class MyTimeTableActivity extends AppCompatActivity
         getSharedPreferences(SHARED_PREF_TAG, MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * 長押しした時に、ダイアログを表示する。
+     */
     @Override
     public boolean onLongClick(View v) {
         ClassDialog dialog = ClassDialog.newInstance(v.getTag().toString());
@@ -44,13 +45,29 @@ public class MyTimeTableActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * SharedPreferencesに変更があったら、時間割の表示を変更する。
+     * @param sharedPreferences 変更されたSharedPreferences
+     * @param key 変更されたキー
+     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Log.d("dbg", key);
         ((TextView) findViewById(Integer.parseInt(key))).setText(sharedPreferences.getString(key, ""));
     }
 
+    /**
+     * 削除確認ダイアログを生成するクラス
+     */
     public static class DeleteConfirmDialog extends DialogFragment {
+        /**
+         * インスタンスを生成する。
+         * @return ダイアログフラグメントを返す。
+         */
+        public static DeleteConfirmDialog newInstance() {
+            return new DeleteConfirmDialog();
+        }
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final SharedPreferences sharedPref =
@@ -74,15 +91,18 @@ public class MyTimeTableActivity extends AppCompatActivity
                     });
             return builder.create();
         }
-
-        public static DeleteConfirmDialog newInstance() {
-            return new DeleteConfirmDialog();
-        }
     }
 
+    /**
+     * 授業の詳細を表示するクラス。
+     */
     public static class ClassDialog extends DialogFragment {
-        String posName;
 
+        /**
+         * ダイアログのインスタンスを生成する。
+         * @param tablePosition 時間割のセルの名前
+         * @return fragment dialog instance
+         */
         public static ClassDialog newInstance(String tablePosition) {
             ClassDialog fragment = new ClassDialog();
             Bundle args = new Bundle();
@@ -96,7 +116,7 @@ public class MyTimeTableActivity extends AppCompatActivity
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final SharedPreferences sharedPref =
                     getActivity().getSharedPreferences(SHARED_PREF_TAG, MODE_PRIVATE);
-            posName = getArguments().getString("table_pos");
+            final String posName = getArguments().getString("table_pos");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
