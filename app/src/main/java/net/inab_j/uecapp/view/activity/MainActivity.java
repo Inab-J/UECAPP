@@ -79,12 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 break;
 
-            case R.id.syllabus_btn:
-                Snackbar.make(mViewLayout, "syllabus", Snackbar.LENGTH_SHORT).show();
-                i = new Intent(MainActivity.this, SyllabusActivity.class);
-                startActivity(i);
-                break;
-
             case R.id.library_btn:
                 Snackbar.make(mViewLayout, "library", Snackbar.LENGTH_SHORT).show();
                 i = new Intent(MainActivity.this, LibraryActivity.class);

@@ -145,26 +145,28 @@ public class MyTimeTableActivity extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int which) {
                             dismiss();
                         }
-                    })
-                    .setNeutralButton("削除", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            DeleteConfirmDialog confirmDialog = new DeleteConfirmDialog();
-                            confirmDialog.show(getFragmentManager(), "confirm");
-
-                            Bundle pos = new Bundle();
-                            pos.putString("table_pos", posName);
-                            confirmDialog.setArguments(pos);
-
-                            FragmentManager fm = getFragmentManager();
-                            fm.beginTransaction()
-                                    .remove(fm.findFragmentByTag("edit"))
-                                    .show(confirmDialog)
-                                    .addToBackStack("edit")
-                                    .commit();
-                        }
                     });
+            // 登録済みの時間割データがあれば削除ボタンを追加
+            if (!sharedPref.getString(posName, "").equals("")) {
+                builder.setNeutralButton("削除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DeleteConfirmDialog confirmDialog = new DeleteConfirmDialog();
+                        confirmDialog.show(getFragmentManager(), "confirm");
 
+                        Bundle pos = new Bundle();
+                        pos.putString("table_pos", posName);
+                        confirmDialog.setArguments(pos);
+
+                        FragmentManager fm = getFragmentManager();
+                        fm.beginTransaction()
+                                .remove(fm.findFragmentByTag("edit"))
+                                .show(confirmDialog)
+                                .addToBackStack("edit")
+                                .commit();
+                    }
+                });
+            }
             return builder.create();
         }
     }
