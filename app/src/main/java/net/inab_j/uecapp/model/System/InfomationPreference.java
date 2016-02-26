@@ -20,7 +20,7 @@ public class InfomationPreference extends DialogPreference {
     public InfomationPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         setNegativeButtonText(null);
-
+        setPositiveButtonText(null);
         TypedArray typedArray = context.obtainStyledAttributes(
                 attrs,
                 R.styleable.InformationPreference
