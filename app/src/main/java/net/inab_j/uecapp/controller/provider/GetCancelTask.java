@@ -33,6 +33,7 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
         mContext = activity.getApplicationContext();
         mActivity = activity;
         setEncoding(ENCODING);
+        mActivity.showProgress();
     }
 
     /**
@@ -88,6 +89,8 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
                     break;
             }
         }
+
+        mActivity.hideProgress();
 
         // 休講情報がなければ、対応するメッセージを表示する
         if (cancelItemList.size() == 0) {

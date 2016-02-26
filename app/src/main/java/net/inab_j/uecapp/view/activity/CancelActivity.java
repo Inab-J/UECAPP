@@ -2,6 +2,7 @@ package net.inab_j.uecapp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.inab_j.uecapp.controller.provider.GetCancelTask;
@@ -48,5 +50,13 @@ public class CancelActivity extends AppCompatActivity {
      */
     public void setVisible() {
         ((TextView) findViewById(R.id.nolist)).setVisibility(View.VISIBLE);
+    }
+
+    public void showProgress() {
+        ((ContentLoadingProgressBar) findViewById(R.id.progressbar_list)).show();
+    }
+
+    public void hideProgress() {
+        ((ContentLoadingProgressBar) findViewById(R.id.progressbar_list)).hide();
     }
 }

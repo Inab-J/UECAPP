@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import net.inab_j.uecapp.controller.util.CacheManager;
+import net.inab_j.uecapp.view.activity.CalendarActivity;
 import net.inab_j.uecapp.view.adapter.CalendarAdapter;
 import net.inab_j.uecapp.view.widget.CalendarItem;
 
@@ -27,18 +28,19 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
     private final String ERA_NAME_EN = "heisei";
     private final String ENCODING = "UTF8";
 
-    private Context mContext;
+    private CalendarActivity mActivity;
 
-    public GetCalendarTask(CalendarAdapter adapter, ListView listView, Context context) {
+    public GetCalendarTask(CalendarAdapter adapter, ListView listView, CalendarActivity activity) {
         super(adapter, listView);
-        mContext = context;
+        mActivity = activity;
         setEncoding(ENCODING);
+        mActivity.showProgress();
     }
 
     @Override
     protected List<String> doInBackground(Void... params) {
-        if (CacheManager.hasValidCache(mContext, CacheManager.sCALENDAR)) {
-            return CacheManager.getCache(mContext, CacheManager.sCALENDAR);
+        if (CacheManager.hasValidCache(mActivity.getApplicationContext(), CacheManager.sCALENDAR)) {
+            return CacheManager.getCache(mActivity.getApplicationContext(), CacheManager.sCALENDAR);
         } else {
             return doGet(createCalendarURL());
         }
@@ -50,7 +52,7 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
         final int CALENDAR_EVENT = 2;
         final int CALENDAR_NOTE = 0;
 
-        CacheManager.setCache(result, mContext, CacheManager.sCALENDAR);
+        CacheManager.setCache(result, mActivity.getApplicationContext(), CacheManager.sCALENDAR);
         List<CalendarItem> calendarItemList = new ArrayList<>();
 
         int newYear = 0;  // 途中で"平成n年"だけの行が現れるためその後の補正用
@@ -87,6 +89,7 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
             }
         }
 
+        mActivity.hideProgress();
         mAdapter.setCalendarList(calendarItemList);
         registerAdapter();
       }

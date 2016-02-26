@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class CalendarActivity extends AppCompatActivity implements AdapterView.O
         ListView lv = (ListView) findViewById(R.id.content_list_view);
         lv.setOnItemClickListener(this);
         mCalendarAdapter = new CalendarAdapter(getApplicationContext());
-        GetCalendarTask task = new GetCalendarTask(mCalendarAdapter, lv, getApplicationContext());
+        GetCalendarTask task = new GetCalendarTask(mCalendarAdapter, lv, this);
         task.execute();
     }
 
@@ -56,6 +57,14 @@ public class CalendarActivity extends AppCompatActivity implements AdapterView.O
         RemarkDialog remarkDialog = RemarkDialog.newInstance(
                 ((CalendarItem) parent.getItemAtPosition(position)).getEvent());
         remarkDialog.show(getFragmentManager(), "remark");
+    }
+
+    public void showProgress() {
+        ((ContentLoadingProgressBar) findViewById(R.id.progressbar_list)).show();
+    }
+
+    public void hideProgress() {
+        ((ContentLoadingProgressBar) findViewById(R.id.progressbar_list)).hide();
     }
 
     public static class RemarkDialog extends DialogFragment {
