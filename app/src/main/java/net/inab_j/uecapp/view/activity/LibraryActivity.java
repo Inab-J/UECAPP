@@ -7,7 +7,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import net.inab_j.uecapp.R;
+import net.inab_j.uecapp.controller.provider.GetLibraryTask;
 import net.inab_j.uecapp.view.widget.CalendarView;
+
+import java.util.Calendar;
 
 public class LibraryActivity extends AppCompatActivity {
 
@@ -15,7 +18,14 @@ public class LibraryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
-        ((CalendarView) findViewById(R.id.lib_calendar)).set(2015, 12 - 1);
+
+        Calendar cal = Calendar.getInstance();
+        ((CalendarView) findViewById(R.id.lib_calendar)).set(
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
+
+        new GetLibraryTask().execute();
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

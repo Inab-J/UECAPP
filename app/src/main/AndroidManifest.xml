@@ -48,10 +48,6 @@
             android:name=".view.activity.MyTimeTableActivity"
             android:label="@string/title_activity_my_time_table"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.SyllabusActivity"
-            android:label="@string/title_activity_syllabus"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
