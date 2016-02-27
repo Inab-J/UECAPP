@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -51,7 +52,7 @@ public class MyTimeTableView extends LinearLayout {
 
     private SharedPreferences mSharedPref;
     private Context mContext;
-    private View.OnLongClickListener mLongClickListener;
+    private MyTimeTableActivity mActivity;
 
     /**
      * コンストラクタ
@@ -62,15 +63,15 @@ public class MyTimeTableView extends LinearLayout {
         super(context, attrs);
         mContext = context;
         mSharedPref = mContext.getSharedPreferences(MyTimeTableActivity.SHARED_PREF_TAG, Context.MODE_PRIVATE);
-        initial();
+        initialize();
     }
 
     /**
      * Viewの生成を行う。
-     * @param listener セルを長押しした時のリスナ
+     * @param activity セルを長押しした時のリスナ
      */
-    public void createView(OnLongClickListener listener) {
-        mLongClickListener = listener;
+    public void createView(MyTimeTableActivity activity) {
+        mActivity = activity;
         setTableSize();
         createRow();
     }
@@ -78,7 +79,7 @@ public class MyTimeTableView extends LinearLayout {
     /**
      * Layoutの各種設定を行う。
      */
-    private void initial() {
+    private void initialize() {
 
         this.setOrientation(VERTICAL);
 
@@ -185,7 +186,6 @@ public class MyTimeTableView extends LinearLayout {
             for (int i = 0; i < mColumnCount; i++) {
                 tv = createItemView(i, j);
                 container = createItemContainer();
-
                 container.addView(tv);
                 row.addView(container);
             }
@@ -208,12 +208,14 @@ public class MyTimeTableView extends LinearLayout {
             tv.setText(createPeriodText(y));
         } else {
             tv.setClickable(true);
-            tv.setOnLongClickListener(mLongClickListener);
+            tv.setOnLongClickListener((OnLongClickListener) mActivity);
             tv.setText(mSharedPref.getString(table_pos, ""));
         }
 
         tv.setId(Integer.parseInt(table_pos));
         tv.setTag(table_pos);
+        tv.setMaxLines(2);
+        tv.setEllipsize(TextUtils.TruncateAt.END);
         tv.setTextColor(Color.BLACK);
         tv.setLayoutParams(new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,

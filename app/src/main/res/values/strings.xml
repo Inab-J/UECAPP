@@ -40,4 +40,9 @@
     <string name="timet_teach">教職</string>
     <string name="timet_link">大学院連携</string>
     <string name="timet_getting">ダウンロード中</string>
+
+    <!-- MyTimeTable -->
+    <string name="hint_subject">科目名</string>
+
 </resources>
+

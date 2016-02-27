@@ -129,13 +129,13 @@ public class MyTimeTableActivity extends AppCompatActivity
             // set buttons
             int day = Integer.parseInt(posName.substring(0,1));
             String message = DAY_NAME[day - 1] + posName.charAt(1) + "限";
-            builder.setMessage(message)
+            builder.setTitle(message)
                     .setPositiveButton("登録", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sharedPref.edit()
                                     .putString(posName,
-                                            ((EditText)content.findViewById(R.id.subject_edit)).getText().toString())
+                                            ((EditText) content.findViewById(R.id.subject_edit)).getText().toString())
                                     .apply();
                             dismiss();
                         }
