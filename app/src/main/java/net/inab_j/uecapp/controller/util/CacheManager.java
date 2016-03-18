@@ -83,7 +83,7 @@ public final class CacheManager {
      * @param context The context to use.
      * @param cacheType The type of cache to update.
      */
-    public static void setCache(List<String> addData, Context context, int cacheType) {
+    public static <T> void setCache(List<T> addData, Context context, int cacheType) {
         File file = getCacheFile(context, cacheType);
 
         FileOutputStream output = null;
@@ -97,7 +97,7 @@ public final class CacheManager {
             output = new FileOutputStream(file);
             pw = new PrintWriter(output);
 
-            for (String line: addData) {
+            for (T line: addData) {
                 pw.println(line);
             }
 

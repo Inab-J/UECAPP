@@ -1,9 +1,14 @@
 package net.inab_j.uecapp.controller.provider;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+
+import net.inab_j.uecapp.controller.util.CacheManager;
+import net.inab_j.uecapp.view.widget.CalendarView;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,7 +18,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -23,91 +30,96 @@ import java.util.List;
 public class GetLibraryTask extends AsyncTask<Void, Void, List<Integer>>{
 
     private final String URL = "http://limefront.cc.uec.ac.jp/modules/news/index.php?caldate=";
-    private final int OPEN = 0;
-    private final int SATURDAY = 1;
-    private final int CLOSED = 2;
-    private final int SHORTEND = 3;
-    private final int EXTRA = 4;
+    public static final int sOPEN = 0;
+    public static final int sSATURDAY = 1;
+    public static final int sCLOSED = 2;
+    public static final int sSHORTEND = 3;
+    public static final int sEXTRA = 4;
+    public static final int sPREV_OR_NEXT = -1;
+
+    private Context mContext;
+    private CalendarView mCalendarView;
 
     /**
      * コンストラクタ
      */
-    public GetLibraryTask() {
+    public GetLibraryTask(Context context, CalendarView calendarView) {
+        mContext = context;
+        mCalendarView = calendarView;
     }
 
     @Override
     protected List<Integer> doInBackground(Void... params) {
-        List<String> result = doGet(URL + "2016-02");
-        for (String line: result) {
-            Log.d("library", line);
+        if (CacheManager.hasValidCache(mContext, CacheManager.sLIBRARY)) {
+            List<String> tmp = CacheManager.getCache(mContext, CacheManager.sLIBRARY);
+            List<Integer> cache = new ArrayList<>();
+            for (String cacheItem: tmp) {
+                cache.add(Integer.valueOf(cacheItem));
+            }
+
+            return cache;
+        } else {
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            Log.d("library", "http");
+            return doGet(URL + sdf.format(cal.getTime()));
+
         }
-        return null;
     }
 
     @Override
     protected void onPostExecute(List<Integer> result) {
         super.onPostExecute(result);
+        CacheManager.setCache(result, mContext, CacheManager.sLIBRARY);
+        Calendar cal = Calendar.getInstance();
+
+        mCalendarView.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), result);
     }
 
-    /**
-     * HTMLを取得し、{@code <td>}タグでパースする。
-     * @param url 取得するURL
-     * @return パースしたデータをArrayListで返す。
-     */
-    protected List<String> doGet(String url) {
-        Log.d("dbg", "http");
-        String html = null;
+    private List<Integer> doGet(String url) {
         try {
-            html = getHtml(url);
+            Document doc = Jsoup.connect(url).get();
+            Elements elements = doc.select("tbody td");
+
+            int i = 0;
+            List<Integer> openInfo = new ArrayList<>();
+            for (Element elem: elements) {
+                String open = elem.attr("class");
+                if (parseOpenInfo(open) != sPREV_OR_NEXT) {
+                    openInfo.add(parseOpenInfo(open));
+                }
+            }
+
+            return openInfo;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        Document document = Jsoup.parse(html);
-        Elements elements = document.getElementsByTag("iframe");
-
-        List<String> data = new ArrayList<>();
-        for (Element elem: elements) {
-            Log.d("library", elem.text());
-            data.add(elem.text());
-        }
-
-        return data;
+        return null;
     }
 
-    /**
-     * Download HTML
-     * @return ダウンロードしたHTMLの文字列を返す。
-     * @throws IOException
-     */
-    private String getHtml(String getUrl) throws IOException{
+    private int parseOpenInfo(String classAttr) {
+        String[] open = classAttr.split(" ");
 
-        URL url = new URL(getUrl);
-        Log.d("dbg", url.toString());
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        if (open.length == 1) {
+            return sOPEN;
+        } else {
+            switch (open[1]) {
+                case "onsaturday":
+                    return sSATURDAY;
 
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while((line = br.readLine()) != null) {
-            sb.append(line);
-            Log.d("library", line);
+                case "closed":
+                    return sCLOSED;
+
+                case "shortened":
+                    return sSHORTEND;
+
+                case "extra":
+                    return sEXTRA;
+
+                default:
+                    return sPREV_OR_NEXT;
+            }
         }
-        br.close();
-
-        return sb.toString();
-    }
-
-    /**
-     * 全角のスペースとカッコを半角に直した文字列を返す。
-     * @param str 変換する文字列。全角スペースやカッコを含まないものでも良い。
-     * @return 半角に変換した文字列
-     */
-    protected String replaceZenkakuHankaku(String str) {
-        String wspace = String.valueOf('\u3000');  // 全角スペース
-        String left = String.valueOf('\uff08');    // 全角左カッコ
-        String right = String.valueOf('\uff09');   // 全角右カッコ
-
-        return str.replaceAll(left, "(").replaceAll(right, ")").replaceAll(wspace, " ");
     }
 }

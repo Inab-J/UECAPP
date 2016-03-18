@@ -3,15 +3,22 @@ package net.inab_j.uecapp.view.widget;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import net.inab_j.uecapp.R;
+import net.inab_j.uecapp.controller.provider.GetLibraryTask;
 
 /**
  * 指定した年月日のカレンダーを表示するクラス
@@ -40,6 +47,9 @@ public class CalendarView extends LinearLayout {
     // 週のレイアウト
     private LinearLayout mWeekLayout;
     private ArrayList<LinearLayout> mWeeks = new ArrayList<LinearLayout>();
+
+    // 開館情報
+    private List<Integer> mOpenInfo;
 
     /**
      * コンストラクタ
@@ -78,7 +88,7 @@ public class CalendarView extends LinearLayout {
         mTitleView.setGravity(Gravity.CENTER_HORIZONTAL); // 中央に表示
         mTitleView.setTextSize((int)(scaleDensity * 14));
         mTitleView.setTypeface(null, Typeface.BOLD); // 太字
-        mTitleView.setPadding(0, 0, 0, (int)(scaleDensity * 8));
+        mTitleView.setPadding(0, 0, 0, (int) (scaleDensity * 8));
 
         addView(mTitleView, new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -105,9 +115,7 @@ public class CalendarView extends LinearLayout {
             LinearLayout.LayoutParams llp =
                     new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
             llp.weight = 1;
-
             mWeekLayout.addView(textView, llp);
-
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
         addView(mWeekLayout, new LinearLayout.LayoutParams(
@@ -131,11 +139,13 @@ public class CalendarView extends LinearLayout {
             // 1週間分の日付ビュー作成
             for (int j = 0; j < WEEKDAYS; j++) {
                 TextView dayView = new TextView(context);
-                dayView.setGravity(Gravity.TOP | Gravity.RIGHT);
-                dayView.setPadding(0, (int)(scaleDensity * 4), (int)(scaleDensity * 4), 0);
+                //dayView.setGravity(Gravity.TOP | Gravity.RIGHT);
+                dayView.setGravity(Gravity.CENTER);
+                //dayView.setPadding(0, (int) (scaleDensity * 4), (int) (scaleDensity * 4), 0);
                 LinearLayout.LayoutParams llp =
-                        new LinearLayout.LayoutParams(0, (int)(scaleDensity * 48));
+                        new LinearLayout.LayoutParams(0, (int)(scaleDensity * 48) - 10);
                 llp.weight = 1;
+                llp.setMargins(0, 5, 10, 0);
                 weekLine.addView(dayView, llp);
             }
 
@@ -150,7 +160,8 @@ public class CalendarView extends LinearLayout {
      * @param year 年の指定
      * @param month 月の指定
      */
-    public void set(int year, int month) {
+    public void set(int year, int month, List<Integer> openInfo) {
+        mOpenInfo = openInfo;
         setTitle(year, month);
         setWeeks();
         setDays(year, month);
@@ -167,8 +178,7 @@ public class CalendarView extends LinearLayout {
         Calendar targetCalendar = getTargetCalendar(year, month);
 
         // 年月フォーマット文字列
-        //String formatString = mTitleView.getContext().getString(R.string.format_month_year);
-        String formatString = "yyyy/MM";
+        String formatString = mTitleView.getContext().getString(R.string.lib_title_format);
         SimpleDateFormat formatter = new SimpleDateFormat(formatString);
         mTitleView.setText(formatter.format(targetCalendar.getTime()));
     }
@@ -207,6 +217,8 @@ public class CalendarView extends LinearLayout {
         int todayMonth = todayCalendar.get(Calendar.MONTH);
         int todayDay   = todayCalendar.get(Calendar.DAY_OF_MONTH);
 
+        int[] dayColor = {Color.WHITE, Color.LTGRAY, Color.CYAN, Color.MAGENTA, Color.RED};
+
         for (int i = 0; i < MAX_WEEK; i++) {
             LinearLayout weekLayout = mWeeks.get(i);
             weekLayout.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
@@ -234,13 +246,19 @@ public class CalendarView extends LinearLayout {
                         todayMonth == month &&
                         todayDay   == dayCounter;
 
-                if (isToday) {
-                    dayView.setTextColor(TODAY_COLOR); // 赤文字
-                    dayView.setTypeface(null, Typeface.BOLD); // 太字
-                    weekLayout.setBackgroundColor(TODAY_BACKGROUND_COLOR); // 週の背景グレー
-                } else {
-                    dayView.setTextColor(DEFAULT_COLOR);
-                    dayView.setTypeface(null, Typeface.NORMAL);
+                try {
+                    if (isToday) {
+                        dayView.setTextColor(TODAY_COLOR); // 赤文字
+                        dayView.setTypeface(null, Typeface.BOLD); // 太字
+                        dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
+                        weekLayout.setBackgroundColor(TODAY_BACKGROUND_COLOR); // 週の背景グレー
+                    } else {
+                        dayView.setTextColor(DEFAULT_COLOR);
+                        dayView.setTypeface(null, Typeface.NORMAL);
+                        dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
+                    }
+                } catch(IndexOutOfBoundsException e) {
+
                 }
                 dayCounter++;
             }
@@ -271,5 +289,27 @@ public class CalendarView extends LinearLayout {
         targetCalendar.set(Calendar.MONTH, month);
         targetCalendar.set(Calendar.DAY_OF_MONTH, 1);
         return targetCalendar;
+    }
+
+    /**
+     * 開館情報に合わせたDrawableを読み込み、返す。
+     * @param type 開館情報
+     * @return Drawable
+     */
+    private Drawable getDrawable(int type) {
+        switch (type) {
+            case GetLibraryTask.sSHORTEND:
+                return getResources().getDrawable(R.drawable.library_shortened);
+
+            case GetLibraryTask.sSATURDAY:
+                return getResources().getDrawable(R.drawable.library_saturday);
+
+            case GetLibraryTask.sEXTRA:
+                return getResources().getDrawable(R.drawable.library_extra);
+
+            case GetLibraryTask.sCLOSED:
+                return getResources().getDrawable(R.drawable.library_close);
+        }
+        return null;
     }
 }

@@ -19,11 +19,12 @@ public class LibraryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
 
+        /*
         Calendar cal = Calendar.getInstance();
         ((CalendarView) findViewById(R.id.lib_calendar)).set(
                 cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
-
-        new GetLibraryTask().execute();
+        */
+        new GetLibraryTask(this, (CalendarView) findViewById(R.id.lib_calendar)).execute();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
