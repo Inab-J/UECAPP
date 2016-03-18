@@ -92,12 +92,16 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
 
                 case CALENDAR_NOTE:
                     item.isRemark(result.get(i).length() >= 3);
+                    if (item.isRemark()) {
+                        item.setNote(result.get(i));
+                    }
                     calendarItemList.add(item);
                     item = new CalendarItem();
                     break;
             }
         }
 
+        mActivity.hideProgress();
         mAdapter.setCalendarList(calendarItemList);
         registerAdapter();
       }
@@ -120,7 +124,7 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
     }
 
     private String replaceTilde(String str) {
-        return str.replace("から", "〜");
+        return str.replace("から", " 〜");
     }
 
     /**

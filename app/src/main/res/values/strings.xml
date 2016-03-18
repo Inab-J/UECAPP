@@ -10,6 +10,8 @@
 
     <!-- Cancel, Calendar -->
     <string name="nocancel">休講情報はありません</string>
+    <string name="calendar_date">期間</string>
+    <string name="calendar_note">備考</string>
 
     <!-- Library -->
     <string name="lib_title_format">M月</string>

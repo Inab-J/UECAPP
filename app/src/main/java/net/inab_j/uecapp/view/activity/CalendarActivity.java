@@ -9,10 +9,12 @@ import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -53,9 +55,9 @@ public class CalendarActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("calendar", ((CalendarItem) parent.getItemAtPosition(position)).getEvent());
+        CalendarItem item = (CalendarItem) parent.getItemAtPosition(position);
         RemarkDialog remarkDialog = RemarkDialog.newInstance(
-                ((CalendarItem) parent.getItemAtPosition(position)).getEvent());
+                item.getDate(), item.getEvent(), item.getNote());
         remarkDialog.show(getFragmentManager(), "remark");
     }
 
@@ -69,10 +71,12 @@ public class CalendarActivity extends AppCompatActivity implements AdapterView.O
 
     public static class RemarkDialog extends DialogFragment {
 
-        public static RemarkDialog newInstance(String remarkStr) {
+        public static RemarkDialog newInstance(String date, String event, String note) {
             RemarkDialog fragment = new RemarkDialog();
             Bundle args = new Bundle();
-            args.putString("remarks", remarkStr);
+            args.putString("date", date);
+            args.putString("event", event);
+            args.putString("note", note);
             fragment.setArguments(args);
 
             return fragment;
@@ -80,12 +84,27 @@ public class CalendarActivity extends AppCompatActivity implements AdapterView.O
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final String remarks = getArguments().getString("remarks");
+            String[] dates = getArguments().getString("date").split("、");
+            String event = getArguments().getString("event");
+            String note = getArguments().getString("note");
+
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+            View content = inflater.inflate(R.layout.dialog_calendar_detail, null);
+
+            String dateStr = "";
+            for (String date: dates) {
+                dateStr += date.trim() + "\n";
+            }
+            ((TextView) content.findViewById(R.id.calendar_date)).setText(dateStr.trim());
+            if (note.length() > 0) {
+                ((TextView) content.findViewById(R.id.calendar_note)).setText(note);
+                (content.findViewById(R.id.calendar_note_container)).setVisibility(View.VISIBLE);
+            }
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(remarks);
-
+            builder.setTitle(event);
+            builder.setView(content);
             return builder.create();
-
         }
     }
 }

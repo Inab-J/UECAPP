@@ -6,7 +6,8 @@ public class CalendarItem {
     private String mYear;
     private String mDate;
     private String mEvent;
-    private boolean mRemark = false;
+    private String mNote = "";
+    private boolean mIsRemark = false;
 
     public long getId() {
         return mId;
@@ -47,10 +48,14 @@ public class CalendarItem {
     }
 
     public void isRemark(boolean remark) {
-        this.mRemark = remark;
+        this.mIsRemark = remark;
     }
 
     public boolean isRemark() {
-        return mRemark;
+        return mIsRemark;
     }
+
+    public void setNote(String note) { this.mNote = note; }
+
+    public String getNote() { return this.mNote; }
 }
