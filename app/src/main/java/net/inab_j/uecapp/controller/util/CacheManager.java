@@ -151,11 +151,17 @@ public final class CacheManager {
                         return false;
                     }
 
-                // 新年度版が公開されるまでアクセスさせない
-                // ラズパイサーバにアクセスして新年度版が公開されてるかチェック
+                // 1日以内のアクセスならtrue(キャッシュ有り)
+                // 同一日にアクセスは1度のみ
                 case sCALENDAR:
-                    // TODO サーバー用意と処理
-                    return true;
+                    int currentDay = currentDate.get(Calendar.DAY_OF_YEAR);
+                    int cacheDay = cacheDate.get(Calendar.DAY_OF_YEAR);
+
+                    if (currentDay == cacheDay) {
+                        return true;
+                    } else {
+                        return true;
+                    }
 
                 default:
                     return false;

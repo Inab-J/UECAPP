@@ -10,6 +10,12 @@ import net.inab_j.uecapp.view.activity.CalendarActivity;
 import net.inab_j.uecapp.view.adapter.CalendarAdapter;
 import net.inab_j.uecapp.view.widget.CalendarItem;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -18,12 +24,13 @@ import java.util.List;
  * 学年暦をダウンロードし、パースをしてアダプターにセットする。
  * 学年暦ページのHTMLファイルは和暦ベースで作成されているため、西暦→和暦変換を行う。
  * 年号が変わる毎に、その年号の開始年、日本語と英語それぞれの年号の名前が必要となる。
- * @TODO 年号関係のパラメータをどこかから取得する？
+ * とりあえず、カレンダー一覧のページから一番上のカレンダーのURLを取得する
  */
 public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
 
     private final int ERA_BEGIN = 1989;
     private final String CALENDAR_URL = "http://www.uec.ac.jp/campus/academic/calendar/";
+    private final String UEC_URL = "http://www.uec.ac.jp";
     private final String ERA_NAME_JP = "平成";
     private final String ERA_NAME_EN = "heisei";
     private final String ENCODING = "UTF8";
@@ -40,9 +47,11 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
     @Override
     protected List<String> doInBackground(Void... params) {
         if (CacheManager.hasValidCache(mActivity.getApplicationContext(), CacheManager.sCALENDAR)) {
+            Log.d("calendar", "cache");
             return CacheManager.getCache(mActivity.getApplicationContext(), CacheManager.sCALENDAR);
         } else {
-            return doGet(createCalendarURL());
+            Log.d("calendar", "http");
+            return doGet(getLatestURL());
         }
     }
 
@@ -58,7 +67,7 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
         int newYear = 0;  // 途中で"平成n年"だけの行が現れるためその後の補正用
         CalendarItem item = new CalendarItem();
         for (int i = 0; i < result.size(); i++) {
-            Log.d("calendar", i + ": " + result.get(i));
+            //Log.d("calendar", i + ": " + result.get(i));
 
             if (result.get(i).startsWith(ERA_NAME_JP)) {
                 if (i != 0)
@@ -89,7 +98,6 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
             }
         }
 
-        mActivity.hideProgress();
         mAdapter.setCalendarList(calendarItemList);
         registerAdapter();
       }
@@ -113,5 +121,22 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
 
     private String replaceTilde(String str) {
         return str.replace("から", "〜");
+    }
+
+    /**
+     * 公式ページから最新のURLを取得する。例外発生時はcreateCalendarURLでURLを生成する。
+     * @return 最新カレンダーのURL
+     */
+    private String getLatestURL() {
+        try {
+            Document document = Jsoup.connect(CALENDAR_URL).get();
+            Element element = document.select("div#primary ul li a").first();
+            return UEC_URL + element.attr("href");
+        } catch (IOException e) {
+            Log.e("calendar", "IOException");
+            e.printStackTrace();
+        }
+
+        return createCalendarURL();
     }
 }

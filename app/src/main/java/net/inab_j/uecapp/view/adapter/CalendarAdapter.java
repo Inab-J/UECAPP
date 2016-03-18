@@ -108,7 +108,6 @@ public class CalendarAdapter extends BaseAdapter {
             holder.remark.setVisibility(View.INVISIBLE);
         }
 
-
         return convertView;
     }
 
