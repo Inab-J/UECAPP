@@ -7,19 +7,17 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.inab_j.uecapp.R;
-import net.inab_j.uecapp.controller.provider.GetLibraryTask;
 
 /**
  * 指定した年月日のカレンダーを表示するクラス
@@ -51,6 +49,7 @@ public class CalendarView extends LinearLayout {
 
     // 開館情報
     private List<Integer> mOpenInfo;
+    private int[] mInfoColors;
 
     /**
      * コンストラクタ
@@ -72,6 +71,7 @@ public class CalendarView extends LinearLayout {
         super(context, attrs);
         this.setOrientation(VERTICAL);
 
+        mInfoColors = getInfoColors(context);
         createTitleView(context);
         createWeekViews(context);
         createDayViews(context);
@@ -87,7 +87,7 @@ public class CalendarView extends LinearLayout {
 
         mTitleView = new TextView(context);
         mTitleView.setGravity(Gravity.CENTER_HORIZONTAL); // 中央に表示
-        mTitleView.setTextSize((int)(scaleDensity * 14));
+        mTitleView.setTextSize((int) (scaleDensity * 14));
         mTitleView.setTypeface(null, Typeface.BOLD); // 太字
         mTitleView.setPadding(0, 0, 0, (int) (scaleDensity * 8));
 
@@ -216,13 +216,7 @@ public class CalendarView extends LinearLayout {
         int todayMonth = todayCalendar.get(Calendar.MONTH);
         int todayDay   = todayCalendar.get(Calendar.DAY_OF_MONTH);
 
-        int[] dayColor = {
-                Color.TRANSPARENT,           // prev or next month
-                Color.parseColor("#dbe9ff"), // saturday
-                Color.parseColor("#ffe2d8"), // close
-                Color.parseColor("#ecfff9"), // shortened
-                Color.parseColor("#d2cde6")  // extra
-        };
+
 
         for (int i = 0; i < MAX_WEEK; i++) {
             LinearLayout weekLayout = mWeeks.get(i);
@@ -255,14 +249,12 @@ public class CalendarView extends LinearLayout {
                     if (isToday) {
                         dayView.setTextColor(TODAY_COLOR); // 赤文字
                         dayView.setTypeface(null, Typeface.BOLD); // 太字
-                        //dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
                         weekLayout.setBackgroundColor(TODAY_BACKGROUND_COLOR); // 週の背景グレー
-                        dayView.setBackgroundColor(dayColor[mOpenInfo.get(dayCounter - 1)]);
+                        dayView.setBackgroundColor(mInfoColors[mOpenInfo.get(dayCounter - 1)]);
                     } else {
                         dayView.setTextColor(DEFAULT_COLOR);
                         dayView.setTypeface(null, Typeface.NORMAL);
-                        //dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
-                        dayView.setBackgroundColor(dayColor[mOpenInfo.get(dayCounter - 1)]);
+                        dayView.setBackgroundColor(mInfoColors[mOpenInfo.get(dayCounter - 1)]);
                     }
                 } catch(IndexOutOfBoundsException e) {
 
@@ -296,5 +288,19 @@ public class CalendarView extends LinearLayout {
         targetCalendar.set(Calendar.MONTH, month);
         targetCalendar.set(Calendar.DAY_OF_MONTH, 1);
         return targetCalendar;
+    }
+
+    private int[] getInfoColors(Context context) {
+        Resources.Theme theme = context.getTheme();
+        TypedValue typedValue = new TypedValue();
+        theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true);
+
+        return new int[]{
+                ContextCompat.getColor(context, typedValue.resourceId),     // open
+                ContextCompat.getColor(context, R.color.library_saturday),  // saturday
+                ContextCompat.getColor(context, R.color.library_close),     // close
+                ContextCompat.getColor(context, R.color.library_shortened), // shortened
+                ContextCompat.getColor(context, R.color.library_extra),     // extra
+        };
     }
 }
