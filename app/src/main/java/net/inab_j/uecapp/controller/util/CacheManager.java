@@ -39,7 +39,6 @@ public final class CacheManager {
      */
     public static List<String> getCache(Context context, int cacheType) {
 
-
         FileInputStream input = null;
         InputStreamReader reader = null;
         BufferedReader br = null;
@@ -208,5 +207,17 @@ public final class CacheManager {
         }
 
         return file;
+    }
+
+    /**
+     * 学年暦、休講情報、開館情報のキャッシュを削除する
+     * @param context
+     */
+    public static void clearAllCache(Context context) {
+        File[] files = context.getCacheDir().listFiles();
+        for (File file: files) {
+            if (file.getName().startsWith("cache"))
+                file.delete();
+        }
     }
 }

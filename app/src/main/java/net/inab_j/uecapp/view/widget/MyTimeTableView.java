@@ -113,12 +113,12 @@ public class MyTimeTableView extends LinearLayout {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         int belong = Integer.parseInt(pref.getString("pref_user_belong", "0"));
-        if (belong == FACULTY_DAY || belong == FACULTY_AREA) {
-            mRowCount = 6;
-            mColumnCount = 6;
-        } else {
+        if (belong == FACULTY_NIGHT) {
             mRowCount = 8;
             mColumnCount = 7;
+        } else {
+            mRowCount = 6;
+            mColumnCount = 6;
         }
     }
 

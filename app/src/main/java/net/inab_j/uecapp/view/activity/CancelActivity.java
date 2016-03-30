@@ -1,6 +1,8 @@
 package net.inab_j.uecapp.view.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,33 +35,47 @@ public class CancelActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_cancel);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getResources().getString(R.string.title_activity_cancel));
+        toolbar.setTitle(
+                getResources().getString(R.string.title_activity_cancel)
+                        + "(" +  getToolbarTitle() + ")"
+        );
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_study_sports);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = getSupportFragmentManager().getFragments().get(0);
 
-                if (fragment.getTag().equals("sports")) {
-                    fab.setImageResource(R.drawable.ic_directions_run_white_24dp);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.cancel_fragment_container, CancelFragment.newInstance(), "school")
-                            .commit();
-                    setProgressVisibility(View.VISIBLE);
-                    setErrorMsgVisibility(View.GONE);
-                } else {
-                    fab.setImageResource(R.drawable.ic_school_white_24dp);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.cancel_fragment_container, SportsFragment.newInstance(), "sports")
-                            .commit();
-                    setProgressVisibility(View.VISIBLE);
-                    setErrorMsgVisibility(View.GONE);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        int belong = Integer.parseInt(pref.getString("pref_user_belong", "0"));
+        if (belong < 3) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment fragment = getSupportFragmentManager().getFragments().get(0);
+
+                    if (fragment.getTag().equals("sports")) {
+                        fab.setImageResource(R.drawable.ic_directions_run_white_24dp);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.cancel_fragment_container,
+                                        CancelFragment.newInstance(),
+                                        "school"
+                                ).commit();
+                        setProgressVisibility(View.VISIBLE);
+                        setErrorMsgVisibility(View.GONE);
+                    } else {
+                        fab.setImageResource(R.drawable.ic_school_white_24dp);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.cancel_fragment_container,
+                                        SportsFragment.newInstance(),
+                                        "sports"
+                                ).commit();
+                        setProgressVisibility(View.VISIBLE);
+                        setErrorMsgVisibility(View.GONE);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            fab.setVisibility(View.GONE);
+        }
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
         mErrorMsg = (TextView) findViewById(R.id.cancel_error_msg);
@@ -69,6 +85,23 @@ public class CancelActivity extends AppCompatActivity {
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.cancel_fragment_container, CancelFragment.newInstance(), "school");
             transaction.commit();
+        }
+    }
+
+    /**
+     * toolbarに表示する所属情報を返す
+     * @return 所属情報を返す
+     */
+    private String getToolbarTitle() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        int belong = Integer.parseInt(pref.getString("pref_user_belong", "0"));
+
+        if (belong < 3) {
+            return "学部";
+        } else if (belong == 3) {
+            return "情報理工学研究科";
+        } else {
+            return "情報システム学研究科";
         }
     }
 

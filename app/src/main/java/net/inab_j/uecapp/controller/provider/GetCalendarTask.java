@@ -1,6 +1,8 @@
 package net.inab_j.uecapp.controller.provider;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -138,9 +140,26 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
      * @return 最新カレンダーのURL
      */
     private String getLatestURL() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        int belong = Integer.parseInt(pref.getString("pref_user_belong", "0"));
+
+        int index;
+        switch (belong) {
+            case 3: // 情報理工学研究科
+                index = 1;
+                break;
+
+            case 4: // 情報システム学研究科
+                index = 2;
+                break;
+
+            default: // 学部
+                index = 0;
+        }
+
         try {
             Document document = Jsoup.connect(CALENDAR_URL).get();
-            Element element = document.select("div#primary ul li a").first();
+            Element element = document.select("div#primary ul li a").get(index);
             return UEC_URL + element.attr("href");
         } catch (IOException e) {
             Log.e("calendar", "IOException");

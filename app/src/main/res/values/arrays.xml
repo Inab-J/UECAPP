@@ -5,11 +5,15 @@
         <item>情報理工学部　昼間コース</item>
         <item>情報理工学部　夜間コース</item>
         <item>情報理工学域</item>
+        <item>情報理工学研究科</item>
+        <item>情報システム学研究科</item>
     </string-array>
     <string-array name="pref_belong_entry_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
     <string-array name="pref_grade_list">
         <item>1</item>

@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,7 +35,10 @@ public class CalendarActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getResources().getString(R.string.title_activity_calendar));
+        toolbar.setTitle(
+                getResources().getString(R.string.title_activity_calendar)
+                        + "(" +  getToolbarTitle() + ")"
+        );
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -59,6 +64,23 @@ public class CalendarActivity extends AppCompatActivity implements AdapterView.O
         RemarkDialog remarkDialog = RemarkDialog.newInstance(
                 item.getDate(), item.getEvent(), item.getNote());
         remarkDialog.show(getFragmentManager(), "remark");
+    }
+
+    /**
+     * toolbarに表示する所属情報を返す
+     * @return 所属情報を返す
+     */
+    private String getToolbarTitle() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        int belong = Integer.parseInt(pref.getString("pref_user_belong", "0"));
+
+        if (belong < 3) {
+            return "学部";
+        } else if (belong == 3) {
+            return "情報理工学研究科";
+        } else {
+            return "情報システム学研究科";
+        }
     }
 
     public void showProgress() {

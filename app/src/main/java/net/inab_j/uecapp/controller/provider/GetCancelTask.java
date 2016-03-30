@@ -1,6 +1,8 @@
 package net.inab_j.uecapp.controller.provider;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ListView;
@@ -21,7 +23,8 @@ import java.util.List;
  */
 public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
 
-    private final String CANCEL_URL = "http://kyoumu.office.uec.ac.jp/kyuukou/kyuukou.html";
+    private final String UNDERGRADUATE = "http://kyoumu.office.uec.ac.jp/kyuukou/kyuukou.html";
+    private final String GRADUATE = "http://kyoumu.office.uec.ac.jp/kyuukou/kyuukou2.html";
     private final String ENCODING = "SJIS";
 
     private CancelFragment mFragment;
@@ -49,7 +52,14 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
         if (CacheManager.hasValidCache(mContext, CacheManager.sCANCEL_STUDY)) {
             return CacheManager.getCache(mContext, CacheManager.sCANCEL_STUDY);
         }
-        return doGet(CANCEL_URL);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        int belong = Integer.parseInt(pref.getString("pref_user_belong", "0"));
+        if (belong < 3) {
+            return doGet(UNDERGRADUATE);
+        } else {
+            return doGet(GRADUATE);
+        }
     }
 
     /**
