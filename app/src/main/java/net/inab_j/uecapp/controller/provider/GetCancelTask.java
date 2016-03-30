@@ -1,13 +1,18 @@
 package net.inab_j.uecapp.controller.provider;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import net.inab_j.uecapp.controller.util.CacheManager;
 import net.inab_j.uecapp.view.activity.CancelActivity;
 import net.inab_j.uecapp.view.adapter.CancelAdapter;
+import net.inab_j.uecapp.view.fragment.CancelFragment;
 import net.inab_j.uecapp.view.widget.CancelItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,21 +24,19 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
     private final String CANCEL_URL = "http://kyoumu.office.uec.ac.jp/kyuukou/kyuukou.html";
     private final String ENCODING = "SJIS";
 
-    private Context mContext;
-    private CancelActivity mActivity;
+    private CancelFragment mFragment;
 
     /**
      * コンストラクタ
      * @param adapter リストのアダプタ
      * @param listView 情報を表示するListView
-     * @param activity ListViewを管理するアクティビティ
+     * @param fragment ListViewを管理するfragment
      */
-    public GetCancelTask(CancelAdapter adapter, ListView listView, CancelActivity activity) {
-        super(adapter, listView);
-        mContext = activity.getApplicationContext();
-        mActivity = activity;
+    public GetCancelTask(CancelAdapter adapter, ListView listView, CancelFragment fragment) {
+        super(adapter, listView, fragment.getActivity().getApplicationContext());
+        mFragment = fragment;
         setEncoding(ENCODING);
-        mActivity.showProgress();
+        ((CancelActivity) mFragment.getActivity()).setProgressVisibility(View.VISIBLE);
     }
 
     /**
@@ -61,6 +64,13 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
         final int CANCEL_SUBJECT = 3;
         final int CANCEL_NOTE = 5;
 
+        if (result == null) {
+            ((CancelActivity) mFragment.getActivity()).setErrorMsgVisibility(View.VISIBLE);
+            ((CancelActivity) mFragment.getActivity()).setProgressVisibility(View.GONE);
+            printError();
+            return;
+        }
+
         CacheManager.setCache(result, mContext, CacheManager.sCANCEL);
         List<CancelItem> cancelItemList = new ArrayList<>();
 
@@ -68,33 +78,36 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
         for (int i = 6; i < result.size(); i++) {
             switch (i % 6) {
                 case CANCEL_CLASS:
-                    item.set_classname(result.get(i));
+                    item.setClassname(result.get(i));
                     break;
 
                 case CANCEL_DATE:
-                    item.set_date(result.get(i));
+                    item.setDate(result.get(i));
                     break;
 
                 case CANCEL_PERIOD:
-                    item.set_period(Integer.parseInt(result.get(i)));
+                    item.setPeriod(result.get(i));
                     break;
 
                 case CANCEL_SUBJECT:
-                    item.set_subject(replaceZenkakuHankaku(result.get(i)));
+                    item.setSubject(replaceZenkakuHankaku(result.get(i)));
                     break;
 
                 case CANCEL_NOTE:
+                    if (result.get(i).length() > 3) {
+                        item.setNote(result.get(i));
+                    }
                     cancelItemList.add(item);
                     item = new CancelItem();
                     break;
             }
         }
 
-        mActivity.hideProgress();
+        mFragment.hideProgress();
 
         // 休講情報がなければ、対応するメッセージを表示する
         if (cancelItemList.size() == 0) {
-            mActivity.setVisible();
+            mFragment.setVisible();
         } else {
             mAdapter.setCancelList(cancelItemList);
             registerAdapter();

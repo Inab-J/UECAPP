@@ -4,47 +4,51 @@ public class CancelItem {
     private long mId;
     private String mDate;
     private String mClassname;
-    private int mPeriod;
+    private String mPeriod;
     private String mSubject;
+    private String mNote = "";
 
-    public long get_id() {
+    public long getId() {
         return mId;
     }
 
-    public void set_id(long id) {
+    public void setId(long id) {
         this.mId = id;
     }
 
-    public String get_date() {
+    public String getDate() {
         return mDate;
     }
 
-    public void set_date(String date) {
+    public void setDate(String date) {
         this.mDate = date;
     }
 
-    public String get_classname() {
+    public String getClassname() {
         return mClassname;
     }
 
-    public void set_classname(String classname) {
+    public void setClassname(String classname) {
         this.mClassname = classname;
     }
 
-    public int get_period() {
+    public String getPeriod() {
         return mPeriod;
     }
 
-    public void set_period(int period) {
+    public void setPeriod(String period) {
         this.mPeriod = period;
     }
 
-    public String get_subject() {
+    public String getSubject() {
         return mSubject;
     }
 
-    public void set_subject(String subject) {
+    public void setSubject(String subject) {
         this.mSubject = subject;
     }
 
+    public String getNote() { return mNote; }
+
+    public void setNote(String note) { mNote = note; }
 }

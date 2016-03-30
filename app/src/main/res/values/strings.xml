@@ -12,10 +12,14 @@
     <string name="nocancel">休講情報はありません</string>
     <string name="calendar_date">期間</string>
     <string name="calendar_note">備考</string>
+    <string name="cancel_date">日時</string>
+    <string name="cancel_classname">クラス</string>
+    <string name="cancel_subject">科目</string>
+    <string name="cancel_note">備考</string>
+    <string name="cancel_error">インターネットに接続してください</string>
 
     <!-- Library -->
     <string name="lib_title_format">M月</string>
-    <string name="lib_today">今日は%sです。</string>
     <string name="lib_normal">通常開館\n9:00~21:30</string>
     <string name="lib_short">短縮開館\n9:00~17:00</string>
     <string name="lib_sat">土曜開館\n10:00~17:00</string>

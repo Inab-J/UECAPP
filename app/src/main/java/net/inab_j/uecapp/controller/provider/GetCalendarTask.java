@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import net.inab_j.uecapp.controller.util.CacheManager;
 import net.inab_j.uecapp.view.activity.CalendarActivity;
@@ -38,7 +39,7 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
     private CalendarActivity mActivity;
 
     public GetCalendarTask(CalendarAdapter adapter, ListView listView, CalendarActivity activity) {
-        super(adapter, listView);
+        super(adapter, listView, activity.getApplicationContext());
         mActivity = activity;
         setEncoding(ENCODING);
         mActivity.showProgress();
@@ -46,9 +47,9 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
 
     @Override
     protected List<String> doInBackground(Void... params) {
-        if (CacheManager.hasValidCache(mActivity.getApplicationContext(), CacheManager.sCALENDAR)) {
+        if (CacheManager.hasValidCache(mContext, CacheManager.sCALENDAR)) {
             Log.d("calendar", "cache");
-            return CacheManager.getCache(mActivity.getApplicationContext(), CacheManager.sCALENDAR);
+            return CacheManager.getCache(mContext, CacheManager.sCALENDAR);
         } else {
             Log.d("calendar", "http");
             return doGet(getLatestURL());
@@ -61,13 +62,18 @@ public class GetCalendarTask extends GetArrayHttpTask<CalendarAdapter> {
         final int CALENDAR_EVENT = 2;
         final int CALENDAR_NOTE = 0;
 
+        if (result == null) {
+            printError();
+            mActivity.hideProgress();
+            return;
+        }
+
         CacheManager.setCache(result, mActivity.getApplicationContext(), CacheManager.sCALENDAR);
         List<CalendarItem> calendarItemList = new ArrayList<>();
 
         int newYear = 0;  // 途中で"平成n年"だけの行が現れるためその後の補正用
         CalendarItem item = new CalendarItem();
         for (int i = 0; i < result.size(); i++) {
-            //Log.d("calendar", i + ": " + result.get(i));
 
             if (result.get(i).startsWith(ERA_NAME_JP)) {
                 if (i != 0)

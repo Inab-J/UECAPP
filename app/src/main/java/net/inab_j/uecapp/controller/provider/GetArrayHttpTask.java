@@ -1,9 +1,14 @@
 package net.inab_j.uecapp.controller.provider;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,6 +30,7 @@ public class GetArrayHttpTask<T extends BaseAdapter> extends AsyncTask<Void, Voi
 
     private String mEncoding;
     private ListView mListView;
+    protected Context mContext;
     protected T mAdapter;
 
     /**
@@ -32,9 +38,29 @@ public class GetArrayHttpTask<T extends BaseAdapter> extends AsyncTask<Void, Voi
      * @param adapter ListViewと紐付けるアダプターのインスタンス
      * @param listView 表示するListView
      */
-    public GetArrayHttpTask(T adapter, ListView listView) {
+    public GetArrayHttpTask(T adapter, ListView listView, Context context) {
         mAdapter = adapter;
         mListView = listView;
+        mContext = context;
+    }
+
+    /**
+     * インターネットに接続しているかを判定する。
+     * @return 接続できればtrue、できなければfalseを返す。
+     */
+    protected void printError() {
+        ConnectivityManager cm =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+
+        String printmsg;
+        if (info != null) {
+            printmsg = "情報を取得できませんでした。";
+        } else {
+            printmsg = "インターネットに接続できません";
+        }
+
+        Toast.makeText(mContext, printmsg, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -68,7 +94,7 @@ public class GetArrayHttpTask<T extends BaseAdapter> extends AsyncTask<Void, Voi
         try {
             html = getHtml(url);
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
 
         Document document = Jsoup.parse(html);

@@ -40,13 +40,6 @@
         android:text="library"/>
 
     <Button
-        android:id="@+id/syllabus_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onMainClick"
-        android:text="syllabus"/>
-
-    <Button
         android:id="@+id/link_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

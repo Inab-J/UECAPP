@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.inab_j.uecapp.R;
@@ -37,7 +38,7 @@ public class CancelAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return mCancelList.get(position).get_id();
+        return mCancelList.get(position).getId();
     }
 
     @Override
@@ -51,16 +52,22 @@ public class CancelAdapter extends BaseAdapter {
             holder.class_name = (TextView) convertView.findViewById(R.id.class_name);
             holder.period = (TextView) convertView.findViewById(R.id.period);
             holder.subject = (TextView) convertView.findViewById(R.id.subject);
+            holder.remarks = (ImageView) convertView.findViewById(R.id.has_remarks);
 
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.date.setText(mCancelList.get(position).get_date());
-        holder.class_name.setText(mCancelList.get(position).get_classname());
-        holder.period.setText(mCancelList.get(position).get_period() + "時限");
-        holder.subject.setText(mCancelList.get(position).get_subject());
+        holder.date.setText(mCancelList.get(position).getDate());
+        holder.class_name.setText(mCancelList.get(position).getClassname());
+        holder.period.setText(mCancelList.get(position).getPeriod() + "時限");
+        holder.subject.setText(mCancelList.get(position).getSubject());
+        if (mCancelList.get(position).getNote().length() > 0) {
+            holder.remarks.setVisibility(View.VISIBLE);
+        } else {
+            holder.remarks.setVisibility(View.INVISIBLE);
+        }
 
         return convertView;
     }
@@ -70,5 +77,6 @@ public class CancelAdapter extends BaseAdapter {
         TextView class_name;
         TextView period;
         TextView subject;
+        ImageView remarks;
     }
 }
