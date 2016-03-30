@@ -25,8 +25,9 @@ import java.util.List;
 public final class CacheManager {
 
     public static final int sCALENDAR = 0;
-    public static final int sCANCEL = 1;
-    public static final int sLIBRARY = 2;
+    public static final int sCANCEL_STUDY = 1;
+    public static final int sCANCEL_SPORT = 2;
+    public static final int sLIBRARY = 3;
 
     private CacheManager() {  }
 
@@ -131,8 +132,16 @@ public final class CacheManager {
             switch (cacheType) {
                 // 最終キャッシュが5分以内なら true
                 // 5分以内のアクセスはさせない
-                case sCANCEL:
+                case sCANCEL_STUDY:
                     cacheDate.add(Calendar.MINUTE, 5);
+                    if (currentDate.before(cacheDate)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                case sCANCEL_SPORT:
+                    cacheDate.add(Calendar.SECOND, 30);
                     if (currentDate.before(cacheDate)) {
                         return true;
                     } else {
@@ -186,7 +195,7 @@ public final class CacheManager {
                 file = new File(context.getCacheDir(), "cache_calendar.dat");
                 break;
 
-            case sCANCEL:
+            case sCANCEL_STUDY:
                 file = new File(context.getCacheDir(), "cache_cancel.dat");
                 break;
 

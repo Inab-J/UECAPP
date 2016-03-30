@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -109,12 +110,11 @@ public class CalendarView extends LinearLayout {
 
         for (int i = 0; i < WEEKDAYS; i++) {
             TextView textView = new TextView(context);
-            textView.setGravity(Gravity.RIGHT); // 中央に表示
-            textView.setPadding(0, 0, (int)(scaleDensity * 4), 0);
-
+            textView.setGravity(Gravity.CENTER); // 中央に表示
             LinearLayout.LayoutParams llp =
                     new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
             llp.weight = 1;
+            llp.setMargins(0, 5, 10, 0);
             mWeekLayout.addView(textView, llp);
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -139,9 +139,7 @@ public class CalendarView extends LinearLayout {
             // 1週間分の日付ビュー作成
             for (int j = 0; j < WEEKDAYS; j++) {
                 TextView dayView = new TextView(context);
-                //dayView.setGravity(Gravity.TOP | Gravity.RIGHT);
                 dayView.setGravity(Gravity.CENTER);
-                //dayView.setPadding(0, (int) (scaleDensity * 4), (int) (scaleDensity * 4), 0);
                 LinearLayout.LayoutParams llp =
                         new LinearLayout.LayoutParams(0, (int)(scaleDensity * 48) - 10);
                 llp.weight = 1;
@@ -195,6 +193,7 @@ public class CalendarView extends LinearLayout {
             TextView textView = (TextView) mWeekLayout.getChildAt(i);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setText(weekFormatter.format(week.getTime())); // テキストに曜日を表示
+            textView.setBackgroundColor(Color.WHITE);
             week.add(Calendar.DAY_OF_MONTH, 1);
         }
     }
@@ -217,7 +216,13 @@ public class CalendarView extends LinearLayout {
         int todayMonth = todayCalendar.get(Calendar.MONTH);
         int todayDay   = todayCalendar.get(Calendar.DAY_OF_MONTH);
 
-        int[] dayColor = {Color.WHITE, Color.LTGRAY, Color.CYAN, Color.MAGENTA, Color.RED};
+        int[] dayColor = {
+                Color.TRANSPARENT,           // prev or next month
+                Color.parseColor("#dbe9ff"), // saturday
+                Color.parseColor("#ffe2d8"), // close
+                Color.parseColor("#ecfff9"), // shortened
+                Color.parseColor("#d2cde6")  // extra
+        };
 
         for (int i = 0; i < MAX_WEEK; i++) {
             LinearLayout weekLayout = mWeeks.get(i);
@@ -250,12 +255,14 @@ public class CalendarView extends LinearLayout {
                     if (isToday) {
                         dayView.setTextColor(TODAY_COLOR); // 赤文字
                         dayView.setTypeface(null, Typeface.BOLD); // 太字
-                        dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
+                        //dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
                         weekLayout.setBackgroundColor(TODAY_BACKGROUND_COLOR); // 週の背景グレー
+                        dayView.setBackgroundColor(dayColor[mOpenInfo.get(dayCounter - 1)]);
                     } else {
                         dayView.setTextColor(DEFAULT_COLOR);
                         dayView.setTypeface(null, Typeface.NORMAL);
-                        dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
+                        //dayView.setBackgroundDrawable(getDrawable(mOpenInfo.get(dayCounter - 1)));
+                        dayView.setBackgroundColor(dayColor[mOpenInfo.get(dayCounter - 1)]);
                     }
                 } catch(IndexOutOfBoundsException e) {
 
@@ -289,27 +296,5 @@ public class CalendarView extends LinearLayout {
         targetCalendar.set(Calendar.MONTH, month);
         targetCalendar.set(Calendar.DAY_OF_MONTH, 1);
         return targetCalendar;
-    }
-
-    /**
-     * 開館情報に合わせたDrawableを読み込み、返す。
-     * @param type 開館情報
-     * @return Drawable
-     */
-    private Drawable getDrawable(int type) {
-        switch (type) {
-            case GetLibraryTask.sSHORTEND:
-                return getResources().getDrawable(R.drawable.library_shortened);
-
-            case GetLibraryTask.sSATURDAY:
-                return getResources().getDrawable(R.drawable.library_saturday);
-
-            case GetLibraryTask.sEXTRA:
-                return getResources().getDrawable(R.drawable.library_extra);
-
-            case GetLibraryTask.sCLOSED:
-                return getResources().getDrawable(R.drawable.library_close);
-        }
-        return null;
     }
 }

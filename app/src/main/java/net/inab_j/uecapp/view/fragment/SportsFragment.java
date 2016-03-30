@@ -90,6 +90,9 @@ public class SportsFragment extends Fragment {
                 }
             }
         });
+
+        // check cache date
+
         mWebView.loadUrl("http://sport.edu.uec.ac.jp/info/");
 
         return mWebView;

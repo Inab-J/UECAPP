@@ -46,8 +46,8 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
      */
     @Override
     protected List<String> doInBackground(Void... params) {
-        if (CacheManager.hasValidCache(mContext, CacheManager.sCANCEL)) {
-            return CacheManager.getCache(mContext, CacheManager.sCANCEL);
+        if (CacheManager.hasValidCache(mContext, CacheManager.sCANCEL_STUDY)) {
+            return CacheManager.getCache(mContext, CacheManager.sCANCEL_STUDY);
         }
         return doGet(CANCEL_URL);
     }
@@ -71,7 +71,7 @@ public class GetCancelTask extends GetArrayHttpTask<CancelAdapter> {
             return;
         }
 
-        CacheManager.setCache(result, mContext, CacheManager.sCANCEL);
+        CacheManager.setCache(result, mContext, CacheManager.sCANCEL_STUDY);
         List<CancelItem> cancelItemList = new ArrayList<>();
 
         CancelItem item = new CancelItem();

@@ -6,8 +6,8 @@
     <color name="half_black">#808080</color>
 
     <!-- Library -->
-    <color name="library_shortened">#ecfff9</color>
     <color name="library_saturday">#dbe9ff</color>
-    <color name="library_extra">#d2cde6</color>
     <color name="library_close">#ffe2d8</color>
+    <color name="library_shortened">#ecfff9</color>
+    <color name="library_extra">#d2cde6</color>
 </resources>
