@@ -1,8 +1,11 @@
 package net.inab_j.uecapp.controller.util;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
+
+import net.inab_j.uecapp.controller.provider.GetPDFTask;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -139,6 +142,8 @@ public final class CacheManager {
                         return false;
                     }
 
+                // 30秒以内
+                // さすがに30秒以内に変わってみれないことないでしょ
                 case sCANCEL_SPORT:
                     cacheDate.add(Calendar.SECOND, 30);
                     if (currentDate.before(cacheDate)) {
@@ -218,6 +223,21 @@ public final class CacheManager {
         for (File file: files) {
             if (file.getName().startsWith("cache"))
                 file.delete();
+        }
+    }
+
+    public static void clearTimetPDF(Context context) {
+        String dir = GetPDFTask.SAVE_DIR;
+        File file = new File(dir);
+
+        if (file.exists()) {
+            Runtime localRuntime = Runtime.getRuntime();
+            String cmd = "rm -r " + dir;
+            try {
+                localRuntime.exec(cmd);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

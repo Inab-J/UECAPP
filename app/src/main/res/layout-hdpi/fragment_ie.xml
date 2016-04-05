@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="24dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="36dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timet_master_after28" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/master_1st_all_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_all" />
+
+                <Button
+                    android:id="@+id/master_1st_j_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_j"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_i_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_i"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_m_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_m"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_s_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_s"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_eng_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_english" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:text="@string/timet_master_before27" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/master_1st_all_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_all" />
+
+                <Button
+                    android:id="@+id/master_1st_j_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_j"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_i_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_i"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_m_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_m"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_s_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_ie_s"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/master_1st_eng_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_english" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onGraduateBtnClick"
+                android:paddingTop="12dp"
+                android:text="@string/timet_doctor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/docter_1st_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_after" />
+
+                <Button
+                    android:id="@+id/docter_1st_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onGraduateBtnClick"
+                    android:text="@string/timet_before" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:text="@string/timet_it" />
+
+            <Button
+                android:id="@+id/high_it"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onGraduateBtnClick"
+                android:text="@string/timet_allyear" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:text="@string/timet_is" />
+
+            <Button
+                android:id="@+id/is"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onGraduateBtnClick"
+                android:text="@string/timet_is_1st" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

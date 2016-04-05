@@ -24,7 +24,7 @@ import java.net.URL;
 public class GetPDFTask extends AsyncTask<Void, Void, Void> {
 
     private final String BASE_URL = "http://kyoumu.office.uec.ac.jp/timet/";
-    private final String SAVE_DIR = Environment.getExternalStorageDirectory().getPath() + "/UECApp/";
+    public static final String SAVE_DIR = Environment.getExternalStorageDirectory().getPath() + "/UECApp/";
 
     private TimeTableActivity mActivity;
     private String mFileName;

@@ -45,9 +45,27 @@
     <string name="timet_foreign">第2外国語</string>
     <string name="timet_high">上級</string>
     <string name="timet_international">国際</string>
-    <string name="timet_teach">教職</string>
+    <string name="timet_teach_old">教職(学部)</string>
+    <string name="timet_teach_new">教職(学域)</string>
     <string name="timet_link">大学院連携</string>
     <string name="timet_getting">ダウンロード中</string>
+    <!-- timetable master and doctor -->
+    <string name="timet_after">28年度以降入学</string>
+    <string name="timet_before">27年度以前入学</string>
+    <string name="timet_doctor">IE博士</string>
+    <string name="timet_master_after28">IE修士(28年度以降入学)</string>
+    <string name="timet_master_before27">IE修士(27年度以前入学)</string>
+    <string name="timet_it">高度IT人材育成プログラム</string>
+    <string name="timet_ie_all">全専攻</string>
+    <string name="timet_ie_j">J専攻</string>
+    <string name="timet_ie_i">I専攻</string>
+    <string name="timet_ie_m">M専攻</string>
+    <string name="timet_ie_s">S専攻</string>
+    <string name="timet_allyear">前・後学期</string>
+    <string name="timet_is">IS</string>
+    <string name="timet_is_1st">IS前学期</string>
+    <string name="timet_is_2nd">IS後学期</string>
+
 
     <!-- MyTimeTable -->
     <string name="hint_subject">科目名</string>

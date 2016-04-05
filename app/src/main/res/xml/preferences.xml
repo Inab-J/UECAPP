@@ -9,6 +9,25 @@
             android:entryValues="@array/pref_belong_entry_values"
             android:key="pref_user_belong"
             android:summary="@string/pref_user_belong_summary"/>
+        <ListPreference
+            android:title="@string/pref_user_major_title"
+            android:dialogTitle="@string/pref_user_major_summary"
+            android:entries="@array/pref_major_list"
+            android:entryValues="@array/pref_major_entry_values"
+            android:key="pref_user_major"
+            android:summary="@string/pref_user_major_title"
+            android:enabled="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_cache">
+        <Preference
+            android:key="@string/pref_clear_timetable"
+            android:title="@string/pref_clear_timetable"
+            android:summary="@string/pref_clear_timetable_summary"/>
+        <Preference
+            android:key="@string/pref_clear_mytimetable"
+            android:title="@string/pref_clear_mytimetable"
+            android:summary="@string/pref_clear_mytimetable_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_about">

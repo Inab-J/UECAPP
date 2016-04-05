@@ -86,10 +86,7 @@ public class TimeTableActivity extends AppCompatActivity {
     public void onBtnClick(View v) {
         Log.d("dbg", IdCorrespond.ID_TO_NAME.get(v.getId()));
         File file = new File(SAVE_DIR + IdCorrespond.ID_TO_NAME.get(v.getId()));
-        /*
-        TODO: IdCorrespondを大学院の前後期に対応させる
-        TODO: 対応させたら表示しているページに対応したものでファイル名に変換する
-        */
+
         if (file.exists()) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.parse("file://" + file.getPath()), "application/pdf");

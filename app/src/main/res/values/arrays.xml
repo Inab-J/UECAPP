@@ -15,13 +15,18 @@
         <item>3</item>
         <item>4</item>
     </string-array>
-    <string-array name="pref_grade_list">
+    <string-array name="pref_major_list">
+        <item>総合情報学</item>
+        <item>情報・通信工学</item>
+        <item>知能機械工学</item>
+        <item>先進理工学</item>
+    </string-array>
+    <string-array name="pref_major_entry_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <item>4</item>
     </string-array>
-
     <!-- My Time Table -->
     <string-array name="day_name">
         <item>月</item>
