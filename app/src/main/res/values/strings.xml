@@ -7,6 +7,7 @@
     <string name="title_activity_library">開館情報</string>
     <string name="title_activity_cancel">休講情報</string>
     <string name="title_activity_syllabus">シラバス</string>
+    <string name="title_activity_my_time_table">My時間割</string>
 
     <!-- Cancel, Calendar -->
     <string name="nocancel">休講情報はありません</string>
@@ -25,7 +26,6 @@
     <string name="lib_sat">土曜開館\n10:00~17:00</string>
     <string name="lib_early">繰り上げ開館\n8:30~21:30</string>
     <string name="lib_close">休館</string>
-    <string name="title_activity_my_time_table">MyTimeTableActivity</string>
 
     <!-- timetable -->
     <string name="timet_grade1">1年</string>

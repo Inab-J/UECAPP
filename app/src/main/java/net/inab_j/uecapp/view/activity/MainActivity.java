@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import net.inab_j.uecapp.R;
 
 public class MainActivity extends AppCompatActivity {
-    private LinearLayout mViewLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mViewLayout = (LinearLayout) findViewById(R.id.root);
     }
 
     @Override
@@ -54,25 +51,21 @@ public class MainActivity extends AppCompatActivity {
         Intent i;
         switch (v.getId()) {
             case R.id.calendar_btn:
-                Snackbar.make(mViewLayout, "calendar", Snackbar.LENGTH_SHORT).show();
                 i = new Intent(MainActivity.this, CalendarActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.timetable_btn:
-                Snackbar.make(mViewLayout, "timetable", Snackbar.LENGTH_SHORT).show();
                 i = new Intent(MainActivity.this, TimeTableActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.cancel_btn:
-                Snackbar.make(mViewLayout, "cancel", Snackbar.LENGTH_SHORT).show();
                 i = new Intent(MainActivity.this, CancelActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.library_btn:
-                Snackbar.make(mViewLayout, "library", Snackbar.LENGTH_SHORT).show();
                 i = new Intent(MainActivity.this, LibraryActivity.class);
                 startActivity(i);
                 break;

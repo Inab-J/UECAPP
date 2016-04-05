@@ -22,7 +22,9 @@
     <string name="pref_about">このアプリについて</string>
     <string name="pref_license">ライセンス</string>
     <string name="pref_about_message">
-        電気通信大学の非公式アプリです。\n
+        電気通信大学の非公式アプリです。\n\n
+        電気通信大学事務局とは一切関係ありません。
+        本アプリに関する電気通信大学へのお問い合わせはご遠慮ください。
     </string>
     <string name="pref_about_title">このアプリについて</string>
     <string name="pref_license_message">
@@ -34,8 +36,7 @@
         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n
     </string>
     <string name="pref_license_title">オープンソースライセンス</string>
-    <string name="pref_mail_contact_title">問い合わせ(メール)</string>
+    <string name="pref_mail_contact_title">問い合わせ</string>
     <string name="pref_contact_email">mailto:pps5.nwa@gmail.com</string>
-    <string name="pref_twitter_contact_title">問い合わせ(Twitter)</string>
-    <string name="pref_contact_twitter_uri">http://twitter.com/Inb_J</string>
+
 </resources>

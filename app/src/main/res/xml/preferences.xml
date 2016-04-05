@@ -43,10 +43,6 @@
             <intent android:action="android.intent.action.VIEW"
                 android:data="@string/pref_contact_email"/>
         </Preference>
-        <Preference android:title="@string/pref_twitter_contact_title">
-            <intent android:action="android.intent.action.VIEW"
-                android:data="@string/pref_contact_twitter_uri"/>
-        </Preference>
 
     </PreferenceCategory>
 </PreferenceScreen>
