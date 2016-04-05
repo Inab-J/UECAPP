@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="link_uec">大学HP</string>
     <string name="link_campus_web">学務情報システム</string>
+
     <string name="link_at_univ">\@Univ</string>
     <string name="link_webclass">WebClass</string>
+
+    <string name="link_coop">生協</string>
+    <string name="link_information">情報基盤センター</string>
+
+    <!-- tmp -->
+    <string name="link_timetable">時間割</string>
+    <string name="link_calendar">学年暦</string>
+    <string name="link_cancel">休講情報</string>
+    <string name="link_library">図書館</string>
 </resources>

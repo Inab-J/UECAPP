@@ -8,26 +8,67 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".view.activity.LinkActivity"
     tools:showIn="@layout/activity_link">
 
-    <Button
-        android:id="@+id/campus_web"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/uec"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onLinkClick"
+            android:text="@string/link_uec"/>
+        <Button
+            android:id="@+id/campus_web"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onLinkClick"
+            android:text="@string/link_campus_web" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onLinkClick"
-        android:text="@string/link_campus_web" />
-    <Button
-        android:id="@+id/at_univ"
-        android:layout_width="wrap_content"
+        android:paddingTop="12dp">
+        <Button
+            android:id="@+id/at_univ"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onLinkClick"
+            android:text="@string/link_at_univ" />
+        <Button
+            android:id="@+id/webclass"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onLinkClick"
+            android:text="@string/link_webclass" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onLinkClick"
-        android:text="@string/link_at_univ" />
-    <Button
-        android:id="@+id/webclass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onLinkClick"
-        android:text="@string/link_webclass" />
+        android:paddingTop="12dp">
+        <Button
+            android:id="@+id/coop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onLinkClick"
+            android:text="@string/link_coop" />
+        <Button
+            android:id="@+id/information"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onLinkClick"
+            android:text="@string/link_information" />
+    </LinearLayout>
 </LinearLayout>
